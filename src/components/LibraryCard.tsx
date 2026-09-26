@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { Workout } from "@/types/workout";
 
 type LibraryCardProps = {
@@ -7,22 +8,17 @@ type LibraryCardProps = {
 
 const LibraryCard = ({ workout }: LibraryCardProps) => {
   return (
-    <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-      {workout.image ? (
-        <Image
-          src={workout.image}
-          alt={workout.name}
-          width={500}
-          height={300}
-          className="h-56 w-full object-cover"
-        />
-      ) : (
-        <div className="flex h-56 w-full items-center justify-center bg-gray-200">
-          <span className="font-semibold text-gray-500">
-            No Image
-          </span>
-        </div>
-      )}
+    <Link
+      href={`/workout/${workout.id}`}
+      className="block overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md"
+    >
+      <Image
+        src={workout.image}
+        alt={workout.name}
+        width={500}
+        height={300}
+        className="h-56 w-full object-cover"
+      />
 
       <div className="p-5">
         <div className="mb-3 flex items-center justify-between">
@@ -46,12 +42,8 @@ const LibraryCard = ({ workout }: LibraryCardProps) => {
             {workout.duration} min · {workout.sets} sets · {workout.reps} reps
           </p>
         </div>
-
-        <button className="mt-5 w-full rounded-full bg-black px-4 py-3 font-bold text-white">
-          View Details
-        </button>
       </div>
-    </div>
+    </Link>
   );
 };
 

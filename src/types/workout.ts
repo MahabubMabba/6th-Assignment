@@ -10,4 +10,6 @@ export type Workout = {
   sets: number;
   reps: string;
   rating: number;
+  description: string;
+  instructions: string[];
 };
