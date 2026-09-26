@@ -1,12 +1,16 @@
 import Image from "next/image";
 import banner from "../../assets/banner.png";
+import getWorkouts from "@/components/getWorkouts";
+import LibraryCard from "@/components/LibraryCard";
 
-const HomePage = () => {
+const HomePage = async () => {
+  const workouts = await getWorkouts();
+
   return (
     <main>
+      {/* Hero Section */}
       <section className="bg-black text-white">
         <div className="container mx-auto grid items-center gap-10 px-4 py-16 md:grid-cols-2">
-          
           <div>
             <h5 className="mb-4 text-sm font-bold uppercase tracking-[3px] text-lime-400">
               WORKOUT LIBRARY
@@ -29,7 +33,6 @@ const HomePage = () => {
             </a>
           </div>
 
-      
           <div className="flex justify-center md:justify-end">
             <Image
               src={banner}
@@ -40,12 +43,18 @@ const HomePage = () => {
               className="h-auto w-full max-w-lg"
             />
           </div>
-
         </div>
       </section>
 
+      {/* Library Section */}
       <section id="library" className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold">THE LIBRARY</h2>
+        <h2 className="mb-8 text-3xl font-bold">THE LIBRARY</h2>
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {workouts.map((workout) => (
+            <LibraryCard key={workout.id} workout={workout} />
+          ))}
+        </div>
       </section>
     </main>
   );
