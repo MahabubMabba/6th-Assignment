@@ -34,12 +34,17 @@ const LibraryCard = ({ workout }: LibraryCardProps) => {
         <h3 className="text-xl font-bold">{workout.name}</h3>
 
         <div className="mt-4 space-y-2 text-sm text-gray-600">
-          <p>Muscle: {workout.muscleGroups.join(", ")}</p>
-
-          <p>Equipment: {workout.equipment}</p>
+          <p>
+            Muscle: {workout.muscleGroups.join(", ")}
+          </p>
 
           <p>
-            {workout.duration} min · {workout.sets} sets · {workout.reps} reps
+            Equipment: {workout.equipment}
+          </p>
+
+          <p>
+            {workout.duration} min · {workout.sets} sets ·{" "}
+            {workout.reps} reps
           </p>
         </div>
       </div>
