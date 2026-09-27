@@ -5,14 +5,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import logo from "../../assets/logo.png";
+import { usePlan } from "@/context/PlanProvider";
 
 const Navbar = () => {
   const pathname = usePathname();
 
+  const { todayPlan, savedWorkouts } = usePlan();
+
   return (
     <nav className="border-b border-gray-200 bg-white">
       <div className="container mx-auto flex items-center justify-between px-4 py-4">
-    
+        {/* Logo */}
         <Link href="/">
           <Image
             src={logo}
@@ -23,7 +26,7 @@ const Navbar = () => {
           />
         </Link>
 
-     
+        {/* Navigation */}
         <div className="flex items-center gap-8">
           <Link
             href="/"
@@ -48,20 +51,20 @@ const Navbar = () => {
           </Link>
         </div>
 
-       
+        {/* Plan & Saved */}
         <div className="flex items-center gap-3">
           <Link
             href="/my-plan"
             className="rounded-full bg-lime-400 px-4 py-2 text-sm font-bold"
           >
-            Plan 0
+            Plan {todayPlan.length}
           </Link>
 
           <Link
             href="/my-plan"
             className="rounded-full border border-gray-900 px-4 py-2 text-sm font-bold"
           >
-            Saved 0
+            Saved {savedWorkouts.length}
           </Link>
         </div>
       </div>

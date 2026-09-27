@@ -6,8 +6,10 @@ import type { Workout } from "@/types/workout";
 type PlanContextType = {
   todayPlan: Workout[];
   savedWorkouts: Workout[];
-  addToTodayPlan: (workout: Workout) => void;
-  saveForLater: (workout: Workout) => void;
+  addToTodayPlan: (workout: Workout) => boolean;
+  saveForLater: (workout: Workout) => boolean;
+  removeFromTodayPlan: (id: number) => void;
+  removeFromSaved: (id: number) => void;
 };
 
 const PlanContext = createContext<PlanContextType | undefined>(
@@ -20,36 +22,49 @@ export const PlanProvider = ({
   children: React.ReactNode;
 }) => {
   const [todayPlan, setTodayPlan] = useState<Workout[]>([]);
-  const [savedWorkouts, setSavedWorkouts] = useState<Workout[]>(
-    []
-  );
+  const [savedWorkouts, setSavedWorkouts] = useState<Workout[]>([]);
 
   const addToTodayPlan = (workout: Workout) => {
-    setTodayPlan((currentPlan) => {
-      const alreadyAdded = currentPlan.some(
-        (item) => item.id === workout.id
-      );
+    const alreadyAdded = todayPlan.some(
+      (item) => item.id === workout.id
+    );
 
-      if (alreadyAdded) {
-        return currentPlan;
-      }
+    if (alreadyAdded) {
+      return false;
+    }
 
-      return [...currentPlan, workout];
-    });
+    setTodayPlan((currentPlan) => [...currentPlan, workout]);
+
+    return true;
   };
 
   const saveForLater = (workout: Workout) => {
-    setSavedWorkouts((currentSaved) => {
-      const alreadySaved = currentSaved.some(
-        (item) => item.id === workout.id
-      );
+    const alreadySaved = savedWorkouts.some(
+      (item) => item.id === workout.id
+    );
 
-      if (alreadySaved) {
-        return currentSaved;
-      }
+    if (alreadySaved) {
+      return false;
+    }
 
-      return [...currentSaved, workout];
-    });
+    setSavedWorkouts((currentSaved) => [
+      ...currentSaved,
+      workout,
+    ]);
+
+    return true;
+  };
+
+  const removeFromTodayPlan = (id: number) => {
+    setTodayPlan((currentPlan) =>
+      currentPlan.filter((workout) => workout.id !== id)
+    );
+  };
+
+  const removeFromSaved = (id: number) => {
+    setSavedWorkouts((currentSaved) =>
+      currentSaved.filter((workout) => workout.id !== id)
+    );
   };
 
   return (
@@ -59,6 +74,8 @@ export const PlanProvider = ({
         savedWorkouts,
         addToTodayPlan,
         saveForLater,
+        removeFromTodayPlan,
+        removeFromSaved,
       }}
     >
       {children}
