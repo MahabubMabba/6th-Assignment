@@ -12,7 +12,7 @@ const LibraryCard = ({ workout }: LibraryCardProps) => {
       href={`/workout/${workout.id}`}
       className="card overflow-hidden border border-zinc-800 bg-zinc-900 text-white transition duration-300 hover:-translate-y-1 hover:border-lime-400/50 hover:shadow-xl"
     >
-      {/* Image */}
+   
       <figure>
         <Image
           src={workout.image}
@@ -23,9 +23,9 @@ const LibraryCard = ({ workout }: LibraryCardProps) => {
         />
       </figure>
 
-      {/* Content */}
+     
       <div className="card-body p-5">
-        {/* Muscle Groups */}
+       
         <div className="flex flex-wrap gap-2">
           {workout.muscleGroups.map((muscle) => (
             <span
@@ -37,32 +37,31 @@ const LibraryCard = ({ workout }: LibraryCardProps) => {
           ))}
         </div>
 
-        {/* Name */}
+     
         <h2 className="card-title mt-2 text-2xl font-bold">
           {workout.name}
         </h2>
 
-        {/* Equipment */}
+      
         <p className="text-sm text-zinc-500">
           Equipment:{" "}
           <span className="text-zinc-300">{workout.equipment}</span>
         </p>
 
-        {/* Stats */}
         <div className="mt-4 flex flex-wrap gap-3 border-t border-zinc-800 pt-4">
-          {/* Duration */}
+        
           <div className="flex items-center gap-1.5 text-sm text-zinc-400">
             <span className="text-base">◷</span>
             <span>{workout.duration} min</span>
           </div>
 
-          {/* Calories */}
+          
           <div className="flex items-center gap-1.5 text-sm text-zinc-400">
             <span className="text-base">🔥</span>
             <span>{workout.caloriesBurned} kcal</span>
           </div>
 
-          {/* Rating */}
+        
           <div className="flex items-center gap-1.5 text-sm text-zinc-400">
             <span className="text-base text-lime-400">★</span>
             <span>{workout.rating}</span>

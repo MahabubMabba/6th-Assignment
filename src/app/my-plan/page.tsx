@@ -95,12 +95,8 @@ const MyPlanPage = () => {
   return (
     <main className="min-h-screen bg-zinc-950 px-4 py-12 text-white md:py-16">
       <div className="container mx-auto max-w-5xl">
-        {/* Header */}
+    
         <section className="mb-10">
-          <p className="text-sm font-bold uppercase tracking-[4px] text-lime-400">
-            YOUR WORKOUT JOURNEY
-          </p>
-
           <h1 className="mt-3 text-4xl font-extrabold md:text-5xl">
             MY PLAN
           </h1>
@@ -111,7 +107,6 @@ const MyPlanPage = () => {
           </p>
         </section>
 
-        {/* Metrics */}
         <section className="mb-10 grid gap-4 sm:grid-cols-3">
           <div className="card border border-zinc-800 bg-zinc-900">
             <div className="card-body">
@@ -150,7 +145,7 @@ const MyPlanPage = () => {
           </div>
         </section>
 
-        {/* Tabs + Sort */}
+        
         <section className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div
             role="tablist"
@@ -215,7 +210,7 @@ const MyPlanPage = () => {
           </select>
         </section>
 
-        {/* Empty State */}
+  
         {sortedWorkouts.length === 0 ? (
           <div className="card border border-zinc-800 bg-zinc-900">
             <div className="card-body items-center py-16 text-center">
@@ -239,7 +234,7 @@ const MyPlanPage = () => {
             </div>
           </div>
         ) : (
-          /* Workout Cards */
+          
           <div className="space-y-5">
             {sortedWorkouts.map((workout) => {
               const isDone = completedWorkouts.includes(
@@ -255,7 +250,7 @@ const MyPlanPage = () => {
                       : "border-zinc-800"
                   }`}
                 >
-                  {/* Image */}
+                 
                   <figure className="md:w-64 md:shrink-0">
                     <Image
                       src={workout.image}
@@ -266,7 +261,7 @@ const MyPlanPage = () => {
                     />
                   </figure>
 
-                  {/* Content */}
+                 
                   <div className="card-body">
                     <div className="flex items-start justify-between gap-4">
                       <div>
@@ -288,7 +283,7 @@ const MyPlanPage = () => {
                       </span>
                     </div>
 
-                    {/* Stats */}
+                  
                     <div className="mt-5 flex flex-wrap gap-3">
                       <div className="badge h-auto border-zinc-700 bg-zinc-950 px-4 py-3 text-white">
                         {workout.duration} min
@@ -303,7 +298,7 @@ const MyPlanPage = () => {
                       </div>
                     </div>
 
-                    {/* Actions */}
+             
                     <div className="card-actions mt-6 flex-wrap justify-end">
                       <Link
                         href={`/workout/${workout.id}`}

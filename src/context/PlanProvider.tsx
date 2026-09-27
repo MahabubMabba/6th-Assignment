@@ -33,7 +33,7 @@ export const PlanProvider = ({
     number[]
   >([]);
 
-  // Add workout to today's plan
+
   const addToTodayPlan = (workout: Workout) => {
     const alreadyAdded = todayPlan.some(
       (item) => item.id === workout.id
@@ -55,7 +55,7 @@ export const PlanProvider = ({
     return true;
   };
 
-  // Save workout for later
+ 
   const saveForLater = (workout: Workout) => {
     const alreadySaved = savedWorkouts.some(
       (item) => item.id === workout.id
@@ -73,7 +73,7 @@ export const PlanProvider = ({
     return true;
   };
 
-  // Remove from today's plan
+ 
   const removeFromTodayPlan = (id: number) => {
     setTodayPlan((currentPlan) =>
       currentPlan.filter((workout) => workout.id !== id)
@@ -86,14 +86,13 @@ export const PlanProvider = ({
     );
   };
 
-  // Remove from saved
+  
   const removeFromSaved = (id: number) => {
     setSavedWorkouts((currentSaved) =>
       currentSaved.filter((workout) => workout.id !== id)
     );
   };
 
-  // Mark workout as done
   const markAsDone = (id: number) => {
     setCompletedWorkouts((currentCompleted) => {
       if (currentCompleted.includes(id)) {

@@ -45,37 +45,36 @@ const WorkoutDetailsPage = async ({
       <div className="container mx-auto max-w-6xl">
         <div className="grid overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900 md:grid-cols-2">
           
-          {/* Image */}
-          <div className="min-h-[350px] md:min-h-full">
+          
+          <div className="min-h-87.5 md:min-h-full">
             <Image
               src={workout.image}
               alt={workout.name}
               width={800}
               height={800}
               priority
-              className="h-full min-h-[350px] w-full object-cover"
+              className="h-full min-h-87.5 w-full object-cover"
             />
           </div>
 
-          {/* Details */}
           <div className="p-6 md:p-8 lg:p-10">
             
-            {/* Difficulty */}
+      
             <span className="badge border-lime-400/30 bg-lime-400/10 px-4 py-3 font-bold text-lime-400">
               {workout.difficulty}
             </span>
 
-            {/* Title */}
+         
             <h1 className="mt-5 text-3xl font-extrabold uppercase leading-tight md:text-4xl">
               {workout.name}
             </h1>
 
-            {/* Description */}
+          
             <p className="mt-5 leading-7 text-zinc-400">
               {workout.description}
             </p>
 
-            {/* Muscle Groups */}
+           
             <div className="mt-6 flex flex-wrap gap-2">
               {workout.muscleGroups.map((muscle) => (
                 <span
@@ -87,7 +86,7 @@ const WorkoutDetailsPage = async ({
               ))}
             </div>
 
-            {/* Key Specs */}
+           
             <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
               
               <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
@@ -180,7 +179,6 @@ const WorkoutDetailsPage = async ({
               </ol>
             </div>
 
-            {/* Actions */}
             <WorkoutActions workout={workout} />
           </div>
         </div>

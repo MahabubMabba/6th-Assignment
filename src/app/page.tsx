@@ -11,7 +11,7 @@ const HomePage = async () => {
 
   return (
     <main>
-      {/* Hero */}
+      
       <section className="bg-black text-white">
         <div className="container mx-auto grid items-center gap-10 px-4 py-16 md:grid-cols-2 md:py-20">
           <div>
@@ -34,11 +34,10 @@ const HomePage = async () => {
               className="btn mt-8 bg-lime-400 text-black hover:bg-lime-300"
             >
               BROWSE WORKOUTS
-              <span className="text-lg">↓</span>
             </Link>
           </div>
 
-          {/* Banner */}
+        
           <div className="flex justify-center md:justify-end">
             <Image
               src={banner}
@@ -52,7 +51,7 @@ const HomePage = async () => {
         </div>
       </section>
 
-      {/* Library */}
+     
       <section
         id="library"
         className="container mx-auto px-4 py-16 md:py-20"
@@ -71,7 +70,7 @@ const HomePage = async () => {
           </p>
         </div>
 
-        {/* Responsive Grid */}
+       
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {workouts.map((workout) => (
             <LibraryCard

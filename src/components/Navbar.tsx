@@ -22,7 +22,7 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950 text-white">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
+         
          <div className="flex gap-4">
              <Link
             href="/"
@@ -40,7 +40,7 @@ const Navbar = () => {
           <p className="font-bold">FITLOG</p>
          </div>
 
-          {/* Desktop Navigation */}
+        
           <div className="hidden items-center gap-8 md:flex">
             <Link
               href="/"
@@ -65,7 +65,7 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Desktop Badges */}
+          
           <div className="hidden items-center gap-3 md:flex">
             <Link
               href="/my-plan"
@@ -82,7 +82,7 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
+        
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -97,7 +97,7 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Mobile Menu */}
+       
         {menuOpen && (
           <div className="border-t border-zinc-800 py-4 md:hidden">
             <div className="flex flex-col gap-3">
