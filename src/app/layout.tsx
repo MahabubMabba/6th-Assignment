@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { PlanProvider } from "@/context/PlanProvider";
+
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -18,14 +20,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="flex min-h-screen flex-col">
         <PlanProvider>
           <Navbar />
-          {children}
+
+          <main className="flex-1">
+            {children}
+          </main>
+
+          <Footer />
 
           <ToastContainer
             position="top-center"
             autoClose={2000}
+            newestOnTop
+            closeOnClick
+            pauseOnHover
+            theme="dark"
           />
         </PlanProvider>
       </body>

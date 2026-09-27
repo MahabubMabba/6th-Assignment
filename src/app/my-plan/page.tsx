@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -18,8 +19,10 @@ const MyPlanPage = () => {
   const {
     todayPlan,
     savedWorkouts,
+    completedWorkouts,
     removeFromTodayPlan,
     removeFromSaved,
+    markAsDone,
   } = usePlan();
 
   const [activeTab, setActiveTab] = useState<
@@ -58,12 +61,12 @@ const MyPlanPage = () => {
     }
   );
 
-  const totalMinutes = activeWorkouts.reduce(
+  const totalMinutes = todayPlan.reduce(
     (total, workout) => total + workout.duration,
     0
   );
 
-  const totalCalories = activeWorkouts.reduce(
+  const totalCalories = todayPlan.reduce(
     (total, workout) =>
       total + workout.caloriesBurned,
     0
@@ -72,15 +75,21 @@ const MyPlanPage = () => {
   const handleRemove = (id: number) => {
     if (activeTab === "today") {
       removeFromTodayPlan(id);
-      toast.success(
-        "Workout removed from today's plan."
-      );
+      toast.success("Workout removed from today's plan.");
     } else {
       removeFromSaved(id);
-      toast.success(
-        "Workout removed from saved workouts."
-      );
+      toast.success("Workout removed from saved workouts.");
     }
+  };
+
+  const handleDone = (id: number) => {
+    if (completedWorkouts.includes(id)) {
+      toast.info("Workout is already marked as done.");
+      return;
+    }
+
+    markAsDone(id);
+    toast.success("Workout marked as done!");
   };
 
   return (
@@ -88,17 +97,21 @@ const MyPlanPage = () => {
       <div className="container mx-auto max-w-5xl">
         {/* Header */}
         <section className="mb-10">
+          <p className="text-sm font-bold uppercase tracking-[4px] text-lime-400">
+            YOUR WORKOUT JOURNEY
+          </p>
+
           <h1 className="mt-3 text-4xl font-extrabold md:text-5xl">
-            My Plan
+            MY PLAN
           </h1>
 
           <p className="mt-4 max-w-2xl text-zinc-400">
-            Keep track of your workouts, stay consistent,
-            and build your plan one session at a time.
+            Cap of five lifts for today. Finish them, then load
+            more.
           </p>
         </section>
 
-        {/* Stats */}
+        {/* Metrics */}
         <section className="mb-10 grid gap-4 sm:grid-cols-3">
           <div className="card border border-zinc-800 bg-zinc-900">
             <div className="card-body">
@@ -106,31 +119,21 @@ const MyPlanPage = () => {
                 Exercises
               </p>
 
-              <h2 className="card-title text-4xl">
-                {activeWorkouts.length}
+              <h2 className="text-4xl font-extrabold">
+                {todayPlan.length}
               </h2>
-
-              <p className="text-sm text-zinc-500">
-                {activeTab === "today"
-                  ? "Planned for today"
-                  : "Saved for later"}
-              </p>
             </div>
           </div>
 
           <div className="card border border-zinc-800 bg-zinc-900">
             <div className="card-body">
               <p className="text-sm text-zinc-500">
-                Total Minutes
+                Minutes
               </p>
 
-              <h2 className="card-title text-4xl">
+              <h2 className="text-4xl font-extrabold">
                 {totalMinutes}
               </h2>
-
-              <p className="text-sm text-zinc-500">
-                Estimated workout time
-              </p>
             </div>
           </div>
 
@@ -140,116 +143,117 @@ const MyPlanPage = () => {
                 Calories
               </p>
 
-              <h2 className="card-title text-4xl">
+              <h2 className="text-4xl font-extrabold">
                 {totalCalories}
               </h2>
-
-              <p className="text-sm text-zinc-500">
-                Estimated calories burned
-              </p>
             </div>
           </div>
         </section>
 
         {/* Tabs + Sort */}
-        <section>
-          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            {/* Tabs */}
-            <div
-              role="tablist"
-              className="tabs tabs-boxed bg-zinc-900"
+        <section className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div
+            role="tablist"
+            className="tabs tabs-boxed bg-zinc-900"
+          >
+            <button
+              role="tab"
+              onClick={() => {
+                setActiveTab("today");
+                setSortOption("default");
+              }}
+              className={`tab ${
+                activeTab === "today"
+                  ? "tab-active bg-lime-400 font-bold text-black"
+                  : "text-zinc-400"
+              }`}
             >
-              <button
-                role="tab"
-                onClick={() => {
-                  setActiveTab("today");
-                  setSortOption("default");
-                }}
-                className={`tab ${
-                  activeTab === "today"
-                    ? "tab-active bg-lime-400 font-bold text-black"
-                    : "text-zinc-400"
-                }`}
-              >
-                Today&apos;s Plan
-              </button>
+              Today&apos;s Plan
+            </button>
 
-              <button
-                role="tab"
-                onClick={() => {
-                  setActiveTab("saved");
-                  setSortOption("default");
-                }}
-                className={`tab ${
-                  activeTab === "saved"
-                    ? "tab-active bg-lime-400 font-bold text-black"
-                    : "text-zinc-400"
-                }`}
-              >
-                Saved
-              </button>
-            </div>
-
-            {/* Sort */}
-            <select
-              value={sortOption}
-              onChange={(event) =>
-                setSortOption(
-                  event.target.value as SortOption
-                )
-              }
-              className="select select-bordered w-full border-zinc-700 bg-zinc-900 text-white sm:w-64"
+            <button
+              role="tab"
+              onClick={() => {
+                setActiveTab("saved");
+                setSortOption("default");
+              }}
+              className={`tab ${
+                activeTab === "saved"
+                  ? "tab-active bg-lime-400 font-bold text-black"
+                  : "text-zinc-400"
+              }`}
             >
-              <option value="default">
-                Sort: Default
-              </option>
-
-              <option value="duration-low">
-                Duration: Low → High
-              </option>
-
-              <option value="duration-high">
-                Duration: High → Low
-              </option>
-
-              <option value="calories-low">
-                Calories: Low → High
-              </option>
-
-              <option value="calories-high">
-                Calories: High → Low
-              </option>
-
-              <option value="rating-high">
-                Rating: High → Low
-              </option>
-            </select>
+              Saved
+            </button>
           </div>
 
-          {/* Empty State */}
-          {sortedWorkouts.length === 0 ? (
-            <div className="alert border-zinc-800 bg-zinc-900 text-zinc-400">
-              <div>
-                <h3 className="font-bold text-white">
-                  {activeTab === "today"
-                    ? "Your plan is empty"
-                    : "Nothing saved yet"}
-                </h3>
+          <select
+            value={sortOption}
+            onChange={(event) =>
+              setSortOption(
+                event.target.value as SortOption
+              )
+            }
+            className="select select-bordered w-full border-zinc-700 bg-zinc-900 text-white sm:w-64"
+          >
+            <option value="default">Sort By</option>
+            <option value="duration-low">
+              Duration: Low → High
+            </option>
+            <option value="duration-high">
+              Duration: High → Low
+            </option>
+            <option value="calories-low">
+              Calories: Low → High
+            </option>
+            <option value="calories-high">
+              Calories: High → Low
+            </option>
+            <option value="rating-high">
+              Rating: High → Low
+            </option>
+          </select>
+        </section>
 
-                <p className="mt-1 text-sm">
-                  {activeTab === "today"
-                    ? "Browse the workout library and add exercises to your today's plan."
-                    : "Save workouts from the details page and they will appear here."}
-                </p>
+        {/* Empty State */}
+        {sortedWorkouts.length === 0 ? (
+          <div className="card border border-zinc-800 bg-zinc-900">
+            <div className="card-body items-center py-16 text-center">
+              <h2 className="text-2xl font-extrabold">
+                NOTHING HERE YET
+              </h2>
+
+              <p className="max-w-md text-zinc-500">
+                Browse the library and add a lift to get today
+                moving.
+              </p>
+
+              <div className="card-actions mt-4">
+                <Link
+                  href="/"
+                  className="btn bg-lime-400 text-black hover:bg-lime-300"
+                >
+                  Go to workouts
+                </Link>
               </div>
             </div>
-          ) : (
-            /* Workout List */
-            <div className="space-y-5">
-              {sortedWorkouts.map((workout) => (
+          </div>
+        ) : (
+          /* Workout Cards */
+          <div className="space-y-5">
+            {sortedWorkouts.map((workout) => {
+              const isDone = completedWorkouts.includes(
+                workout.id
+              );
+
+              return (
                 <div
                   key={workout.id}
-                  className="card overflow-hidden border border-zinc-800 bg-zinc-900 md:card-side"
+                  className={`card overflow-hidden border bg-zinc-900 md:card-side ${
+                    isDone
+                      ? "border-lime-400/40"
+                      : "border-zinc-800"
+                  }`}
                 >
                   {/* Image */}
                   <figure className="md:w-64 md:shrink-0">
@@ -275,9 +279,7 @@ const MyPlanPage = () => {
                         </h3>
 
                         <p className="mt-2 text-sm text-zinc-500">
-                          {workout.muscleGroups.join(
-                            " · "
-                          )}
+                          {workout.equipment}
                         </p>
                       </div>
 
@@ -286,54 +288,64 @@ const MyPlanPage = () => {
                       </span>
                     </div>
 
-                    {/* Workout Info */}
+                    {/* Stats */}
                     <div className="mt-5 flex flex-wrap gap-3">
-                      <div className="badge h-auto gap-1 border-zinc-700 bg-zinc-950 px-4 py-3 text-white">
-                        <span className="text-zinc-500">
-                          Time:
-                        </span>
+                      <div className="badge h-auto border-zinc-700 bg-zinc-950 px-4 py-3 text-white">
                         {workout.duration} min
                       </div>
 
-                      <div className="badge h-auto gap-1 border-zinc-700 bg-zinc-950 px-4 py-3 text-white">
-                        <span className="text-zinc-500">
-                          Sets:
-                        </span>
-                        {workout.sets}
+                      <div className="badge h-auto border-zinc-700 bg-zinc-950 px-4 py-3 text-white">
+                        {workout.caloriesBurned} kcal
                       </div>
 
-                      <div className="badge h-auto gap-1 border-zinc-700 bg-zinc-950 px-4 py-3 text-white">
-                        <span className="text-zinc-500">
-                          Reps:
-                        </span>
-                        {workout.reps}
-                      </div>
-
-                      <div className="badge h-auto gap-1 border-zinc-700 bg-zinc-950 px-4 py-3 text-white">
-                        <span className="text-zinc-500">
-                          Calories:
-                        </span>
-                        {workout.caloriesBurned}
+                      <div className="badge h-auto border-zinc-700 bg-zinc-950 px-4 py-3 text-white">
+                        ★ {workout.rating}
                       </div>
                     </div>
 
-                    {/* Remove */}
-                    <div className="card-actions mt-5 justify-end">
+                    {/* Actions */}
+                    <div className="card-actions mt-6 flex-wrap justify-end">
+                      <Link
+                        href={`/workout/${workout.id}`}
+                        className="btn btn-outline border-zinc-600 text-white hover:border-lime-400 hover:bg-transparent hover:text-lime-400"
+                      >
+                        View Details
+                      </Link>
+
+                      {activeTab === "today" && (
+                        <button
+                          onClick={() =>
+                            handleDone(workout.id)
+                          }
+                          disabled={isDone}
+                          className={`btn ${
+                            isDone
+                              ? "bg-lime-400 text-black"
+                              : "btn-outline border-lime-400 text-lime-400"
+                          }`}
+                        >
+                          {isDone
+                            ? "✓ Done"
+                            : "✓ Mark as Done"}
+                        </button>
+                      )}
+
                       <button
                         onClick={() =>
                           handleRemove(workout.id)
                         }
                         className="btn btn-outline btn-error"
+                        aria-label={`Remove ${workout.name}`}
                       >
-                        Remove
+                        ✕
                       </button>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </section>
+              );
+            })}
+          </div>
+        )}
       </div>
     </main>
   );

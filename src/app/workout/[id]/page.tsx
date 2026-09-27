@@ -16,13 +16,25 @@ const WorkoutDetailsPage = async ({
 
   const workouts = await getWorkouts();
 
-  const workout = workouts.find((item) => item.id === Number(id));
+  const workout = workouts.find(
+    (item) => item.id === Number(id)
+  );
 
   if (!workout) {
     return (
-      <main className="min-h-screen bg-zinc-950 px-4 py-20 text-white">
-        <div className="container mx-auto">
-          <h1 className="text-3xl font-bold">Workout not found</h1>
+      <main className="flex min-h-screen items-center justify-center bg-zinc-950 px-4 text-white">
+        <div className="text-center">
+          <p className="text-sm font-bold uppercase tracking-[3px] text-lime-400">
+            FITLOG
+          </p>
+
+          <h1 className="mt-3 text-4xl font-extrabold">
+            WORKOUT NOT FOUND
+          </h1>
+
+          <p className="mt-4 text-zinc-500">
+            The workout you are looking for does not exist.
+          </p>
         </div>
       </main>
     );
@@ -30,30 +42,31 @@ const WorkoutDetailsPage = async ({
 
   return (
     <main className="min-h-screen bg-zinc-950 px-4 py-12 text-white md:py-16">
-      <div className="container mx-auto">
-        {/* Main Details */}
-        <section className="grid overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900 shadow-2xl md:grid-cols-2">
-          {/* Left Side - Image */}
-          <div className="min-h-[400px]">
+      <div className="container mx-auto max-w-6xl">
+        <div className="grid overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900 md:grid-cols-2">
+          
+          {/* Image */}
+          <div className="min-h-[350px] md:min-h-full">
             <Image
               src={workout.image}
               alt={workout.name}
-              width={700}
-              height={700}
+              width={800}
+              height={800}
               priority
-              className="h-full w-full object-cover"
+              className="h-full min-h-[350px] w-full object-cover"
             />
           </div>
 
-          {/* Right Side - All Content */}
+          {/* Details */}
           <div className="p-6 md:p-8 lg:p-10">
+            
             {/* Difficulty */}
-            <span className="inline-block rounded-full bg-lime-400/10 px-4 py-2 text-sm font-bold text-lime-400">
+            <span className="badge border-lime-400/30 bg-lime-400/10 px-4 py-3 font-bold text-lime-400">
               {workout.difficulty}
             </span>
 
-            {/* Name */}
-            <h1 className="mt-5 text-3xl font-extrabold leading-tight md:text-4xl">
+            {/* Title */}
+            <h1 className="mt-5 text-3xl font-extrabold uppercase leading-tight md:text-4xl">
               {workout.name}
             </h1>
 
@@ -67,73 +80,74 @@ const WorkoutDetailsPage = async ({
               {workout.muscleGroups.map((muscle) => (
                 <span
                   key={muscle}
-                  className="rounded-full border border-zinc-700 bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-300"
+                  className="badge border-zinc-700 bg-zinc-800 px-4 py-3 text-zinc-300"
                 >
                   {muscle}
                 </span>
               ))}
             </div>
 
-            {/* Workout Details */}
-            <div className="mt-8 space-y-3">
-              {/* Equipment */}
+            {/* Key Specs */}
+            <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
+              
               <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
-                <p className="text-sm text-zinc-500">Equipment</p>
-
-                <p className="mt-1 font-semibold text-white">
+                <p className="text-xs uppercase text-zinc-500">
+                  Equipment
+                </p>
+                <p className="mt-1 font-semibold">
                   {workout.equipment}
                 </p>
               </div>
 
-              {/* Difficulty */}
               <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
-                <p className="text-sm text-zinc-500">Difficulty</p>
-
-                <p className="mt-1 font-semibold text-white">
+                <p className="text-xs uppercase text-zinc-500">
+                  Difficulty
+                </p>
+                <p className="mt-1 font-semibold">
                   {workout.difficulty}
                 </p>
               </div>
 
-              {/* Sets */}
               <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
-                <p className="text-sm text-zinc-500">Sets</p>
-
-                <p className="mt-1 font-semibold text-white">
+                <p className="text-xs uppercase text-zinc-500">
+                  Sets
+                </p>
+                <p className="mt-1 font-semibold">
                   {workout.sets}
                 </p>
               </div>
 
-              {/* Reps */}
               <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
-                <p className="text-sm text-zinc-500">Reps</p>
-
-                <p className="mt-1 font-semibold text-white">
+                <p className="text-xs uppercase text-zinc-500">
+                  Reps
+                </p>
+                <p className="mt-1 font-semibold">
                   {workout.reps}
                 </p>
               </div>
 
-              {/* Duration */}
               <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
-                <p className="text-sm text-zinc-500">Duration</p>
-
-                <p className="mt-1 font-semibold text-white">
+                <p className="text-xs uppercase text-zinc-500">
+                  Duration
+                </p>
+                <p className="mt-1 font-semibold">
                   {workout.duration} min
                 </p>
               </div>
 
-              {/* Calories */}
               <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
-                <p className="text-sm text-zinc-500">Calories</p>
-
-                <p className="mt-1 font-semibold text-white">
+                <p className="text-xs uppercase text-zinc-500">
+                  Calories
+                </p>
+                <p className="mt-1 font-semibold">
                   {workout.caloriesBurned} kcal
                 </p>
               </div>
 
-              {/* Rating */}
-              <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
-                <p className="text-sm text-zinc-500">Rating</p>
-
+              <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 sm:col-span-3">
+                <p className="text-xs uppercase text-zinc-500">
+                  Rating
+                </p>
                 <p className="mt-1 font-semibold text-lime-400">
                   ★ {workout.rating}
                 </p>
@@ -142,27 +156,34 @@ const WorkoutDetailsPage = async ({
 
             {/* Instructions */}
             <div className="mt-10">
-              <h2 className="text-2xl font-bold">Instructions</h2>
+              <h2 className="text-2xl font-extrabold">
+                INSTRUCTIONS
+              </h2>
 
-              <div className="mt-5 space-y-4">
-                {workout.instructions.map((instruction, index) => (
-                  <div key={index} className="flex gap-4">
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-lime-400 text-sm font-bold text-black">
-                      {index + 1}
-                    </span>
+              <ol className="mt-5 space-y-4">
+                {workout.instructions.map(
+                  (instruction, index) => (
+                    <li
+                      key={index}
+                      className="flex gap-4"
+                    >
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-lime-400 text-sm font-bold text-black">
+                        {index + 1}
+                      </span>
 
-                    <p className="leading-7 text-zinc-400">
-                      {instruction}
-                    </p>
-                  </div>
-                ))}
-              </div>
+                      <p className="leading-7 text-zinc-400">
+                        {instruction}
+                      </p>
+                    </li>
+                  )
+                )}
+              </ol>
             </div>
 
             {/* Actions */}
             <WorkoutActions workout={workout} />
           </div>
-        </section>
+        </div>
       </div>
     </main>
   );

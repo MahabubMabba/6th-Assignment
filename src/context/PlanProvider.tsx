@@ -6,10 +6,13 @@ import type { Workout } from "@/types/workout";
 type PlanContextType = {
   todayPlan: Workout[];
   savedWorkouts: Workout[];
+  completedWorkouts: number[];
+
   addToTodayPlan: (workout: Workout) => boolean;
   saveForLater: (workout: Workout) => boolean;
   removeFromTodayPlan: (id: number) => void;
   removeFromSaved: (id: number) => void;
+  markAsDone: (id: number) => void;
 };
 
 const PlanContext = createContext<PlanContextType | undefined>(
@@ -22,8 +25,15 @@ export const PlanProvider = ({
   children: React.ReactNode;
 }) => {
   const [todayPlan, setTodayPlan] = useState<Workout[]>([]);
-  const [savedWorkouts, setSavedWorkouts] = useState<Workout[]>([]);
+  const [savedWorkouts, setSavedWorkouts] = useState<Workout[]>(
+    []
+  );
 
+  const [completedWorkouts, setCompletedWorkouts] = useState<
+    number[]
+  >([]);
+
+  // Add workout to today's plan
   const addToTodayPlan = (workout: Workout) => {
     const alreadyAdded = todayPlan.some(
       (item) => item.id === workout.id
@@ -33,11 +43,19 @@ export const PlanProvider = ({
       return false;
     }
 
-    setTodayPlan((currentPlan) => [...currentPlan, workout]);
+    if (todayPlan.length >= 5) {
+      return false;
+    }
+
+    setTodayPlan((currentPlan) => [
+      ...currentPlan,
+      workout,
+    ]);
 
     return true;
   };
 
+  // Save workout for later
   const saveForLater = (workout: Workout) => {
     const alreadySaved = savedWorkouts.some(
       (item) => item.id === workout.id
@@ -55,16 +73,35 @@ export const PlanProvider = ({
     return true;
   };
 
+  // Remove from today's plan
   const removeFromTodayPlan = (id: number) => {
     setTodayPlan((currentPlan) =>
       currentPlan.filter((workout) => workout.id !== id)
     );
+
+    setCompletedWorkouts((currentCompleted) =>
+      currentCompleted.filter(
+        (workoutId) => workoutId !== id
+      )
+    );
   };
 
+  // Remove from saved
   const removeFromSaved = (id: number) => {
     setSavedWorkouts((currentSaved) =>
       currentSaved.filter((workout) => workout.id !== id)
     );
+  };
+
+  // Mark workout as done
+  const markAsDone = (id: number) => {
+    setCompletedWorkouts((currentCompleted) => {
+      if (currentCompleted.includes(id)) {
+        return currentCompleted;
+      }
+
+      return [...currentCompleted, id];
+    });
   };
 
   return (
@@ -72,10 +109,12 @@ export const PlanProvider = ({
       value={{
         todayPlan,
         savedWorkouts,
+        completedWorkouts,
         addToTodayPlan,
         saveForLater,
         removeFromTodayPlan,
         removeFromSaved,
+        markAsDone,
       }}
     >
       {children}
@@ -87,7 +126,9 @@ export const usePlan = () => {
   const context = useContext(PlanContext);
 
   if (!context) {
-    throw new Error("usePlan must be used inside PlanProvider");
+    throw new Error(
+      "usePlan must be used inside PlanProvider"
+    );
   }
 
   return context;
